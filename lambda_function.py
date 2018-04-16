@@ -64,6 +64,7 @@ class CfnBotoInterface(object):
         '''
         try:
             # This is a set of calls to helper functions which templates out the arguments
+            logger.info("Raw Event: {}".format(self.raw_data))
             self.data = traverse_find(self.raw_data,self.prefix_random,self._interpolate_rand)
             self.data = traverse_find(self.data,self.prefix_event,self._template)
             for modifier in [ '!str.', '!int.' ]:
@@ -183,7 +184,8 @@ class CfnBotoInterface(object):
         return self.buff
 
     def _mod(self, value):
-        mod, value = return_modifier(value)
+        traverse_modify(self.raw_data,value,self._set_buffer)
+        mod, value = return_modifier(self.buff)
         logger.info("Modifier: {}".format(mod))
         if mod:
             return convert(self.buff,mod)
