@@ -184,12 +184,10 @@ class CfnBotoInterface(object):
         return self.buff
 
     def _mod(self, value):
-        traverse_modify(self.raw_data,value,self._set_buffer)
-        mod, value = return_modifier(self.buff)
-        logger.info("Modifier: {}".format(mod))
+        mod, value = return_modifier(value)
         if mod:
-            return convert(self.buff,mod)
-        return self.buff
+            return convert(value,mod)
+        return value
          
     def _interpolate_rand(self, value):
         '''
